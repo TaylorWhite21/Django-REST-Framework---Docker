@@ -1,24 +1,23 @@
-# Lab: Django REST Framework & Docker
+# Lab: Django REST Framework, Docker, Postgres
 ## Overview
-Use Django REST Framework to create an API, then “containerize” it with Docker.
-
-## Feature Tasks and Requirements
-- Rebuild a custom version of Things API demo project from scratch.
-  - Replace things_project and Thing with your own application and model.
-  - Your model must have at least as many fields as demo’s model.
-  - Your model must have one field that is a foreign key to user.
-  - NOTE: You are not required to build any templates for this lab.
-## Features - Docker
-- NOTE Refer to the class demo for built out Dockerfile and docker-compose.yml examples.
-- Update Dockerfile and docker-compose.yml if needed.
+Use Django REST Framework to create an API, then “containerize” it with Docker and implement Postgres
 
 ## Implementation Notes
- - If you get an allowed host error examine the bug details and update code as needed.
-- When Docker installed and docker files are ready to go then run…
-      ```
-      $ docker-compose up
-      ```
-- To shut docker down enter ctrl+c
-- You’ll learn a better way soon
-## User Acceptance Tests
-- Modify provided unit tests in demo to work for your project.
+- You should NOT be running Postgres directly on host machine.
+  - This means that operations like createsuperuser and migrate will need to happen inside the container.
+  - For example…
+      - docker-compose run web python manage.py migrate
+
+## Features - Django REST Framework
+- Make your site a DRF powered API as you did in previous lab.
+- Adjust project’s permissions so that only authenticated user’s have access to API.
+- Add a custom permission so that only author of blog post can update or delete it.
+- Add ability to switch user’s directly from browsable API.
+## Features - Docker
+- NOTE Refer to demo for built out Dockerfile and docker-compose.yml examples.
+- create Dockerfile based off python:3.8-slim
+- create docker-compose.yml to run Django app as a web service.
+- enter docker-compose up --build to start your site.
+- add postgres 11 as a service
+  - Note: It is not required to include a volume so that data can persist when container is shut down.
+- Go to browsable api and confirm site properly restricts users based on their permissions.
